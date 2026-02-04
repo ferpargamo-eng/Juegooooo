@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Juego Especial 💘</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      text-align: center;
+      padding: 40px;
+      color: #fff;
+    }
+    .card {
+      background: rgba(0,0,0,0.2);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+    button {
+      background: #ff4d6d;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 30px;
+      color: white;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ff1e4d;
+    }
+
+    /* PARA EL BOTON NO MOVIBLE */
+    #yesButton, #noButton {
+      position: relative;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card" id="game">
+  <h1>Hola corazón </h1>
+  <p>Vamos a jugar algo…</p>
+  <button onclick="nextStep(1)">START💌</button>
+</div>
+
+<!-- SONIDO -->
+<audio id="correctSound">
+  <source src="https://freesound.org/data/previews/170/170089_2437358-lq.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<script>
+  // SONIDO + CONFETI
+  function lanzarConfeti() {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#ff4d6d', '#ffb3c1', '#fff'],
+    });
+  }
+
+  function correcta(siguiente) {
+    document.getElementById('correctSound').play(); // Sonido
+    lanzarConfeti(); // Confeti
+    alert("💖 Correctooo 😍 sabía que contestarias bien");
+    nextStep(siguiente);
+  }
+
+  function incorrecta() {
+    alert("❌ Nooo, intenta otra vez");
+  }
+
+  function nextStep(step) {
+    const game = document.getElementById("game");
+
+    if (step === 1) {
+      game.innerHTML = `
+        <h1>Pregunta 1 💭</h1>
+        <p>¿Dónde fue nuestra primera cita?</p>
+        <button onclick="correcta(2)">En Waffles and Coffee </button>
+        <button onclick="incorrecta()">En Al Súper 🛒</button>
+      `;
+    }
+
+    if (step === 2) {
+      game.innerHTML = `
+        <h1>Pregunta 2 💗</h1>
+        <p>¿Me seguirías amando si un día me convierto en una cebolla?</p>
+        <button onclick="incorrecta()">No, que asco mejor nadota</button>
+        <button onclick="correcta(3)">Ooooobvio que si 💕</button>
+      `;
+    }
+
+    if (step === 3) {
+      // ÚLTIMA PREGUNTA
+      game.innerHTML = `
+        <h1>Última pregunta 💘</h1>
+        <p>Esta sí es MUY importante…</p>
+        <h2>¿Quieres ser mi San Valentín? 🌹</h2>
+        <button id="yesButton">SÍ 💞</button>
+        <button id="noButton">NO 😳</button>
+      `;
+
+      // BOTONES
+      const yesBtn = document.getElementById('yesButton');
+      yesBtn.addEventListener('click', function() {
+        document.getElementById('correctSound').play();
+        lanzarConfeti();
+        alert("💖 SABÍA QUE DIRÍAS QUE SÍ, TE AMOOO 💖");
+      });
+
+      const noBtn = document.getElementById('noButton');
+      noBtn.addEventListener('mousemove', function() {
+        const x = Math.random() * 300;
+        const y = Math.random() * 100;
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+      });
+
+      noBtn.addEventListener('click', function() {
+        alert("😂 Ja ja, no puedes decir que no!");
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
